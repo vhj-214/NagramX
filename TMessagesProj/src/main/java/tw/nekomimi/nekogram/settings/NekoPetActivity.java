@@ -141,7 +141,7 @@ public class NekoPetActivity extends BaseNekoSettingsActivity {
         content.setPadding(dp(18), dp(8), dp(18), dp(18));
 
         addTutorialText(content, "一、复制完整生成口令", true);
-        addTutorialText(content, "点击下面的“复制生成口令”按钮，完整口令会写入手机剪贴板，并提示复制成功。然后打开豆包，将口令粘贴到输入框。", false);
+        addTutorialText(content, "点击下面的“复制生成口令”按钮，完整口令会写入手机剪贴板，并提示复制成功。请使用网页版豆包，不要使用手机版豆包，否则生成完成后可能无法下载宠物压缩包。然后打开豆包，将口令粘贴到输入框。", false);
         Button copyButton = new Button(getParentActivity());
         copyButton.setText("复制生成口令");
         copyButton.setAllCaps(false);
