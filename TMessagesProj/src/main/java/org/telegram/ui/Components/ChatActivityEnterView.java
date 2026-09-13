@@ -8453,9 +8453,12 @@ public class ChatActivityEnterView extends FrameLayout implements
                             if (destroyed || messageEditText == null || !TextUtils.equals(messageEditText.getTextToUse(), outgoingAutoTranslationOriginalText)) {
                                 return;
                             }
-                            String messageToSend = NaConfig.INSTANCE.getOutgoingAutoTranslateIncludeOriginal().Bool() && !TextUtils.equals(originalMessage, translation)
-                                    ? originalMessage + "\n\n" + translation
-                                    : translation;
+                            // Some providers return an empty result for links, symbols, letters, or other
+                            // content they cannot translate. Such messages must still be sent unchanged.
+                            String translatedMessage = TextUtils.isEmpty(translation) ? originalMessage : translation;
+                            String messageToSend = NaConfig.INSTANCE.getOutgoingAutoTranslateIncludeOriginal().Bool() && !TextUtils.equals(originalMessage, translatedMessage)
+                                    ? originalMessage + "\n\n" + translatedMessage
+                                    : translatedMessage;
                             messageEditText.setText(messageToSend);
                             sendMessageInternal(notify, scheduleDate, scheduleRepeatPeriod, payStars, false, internalParams);
                         }
@@ -8464,7 +8467,10 @@ public class ChatActivityEnterView extends FrameLayout implements
                         public void onFailed(boolean unsupported, String errorMessage) {
                             outgoingAutoTranslationInProgress = false;
                             if (!destroyed && messageEditText != null && TextUtils.equals(messageEditText.getTextToUse(), outgoingAutoTranslationOriginalText)) {
-                                Toast.makeText(getContext(), getString(R.string.OutgoingAutoTranslateFailed), Toast.LENGTH_SHORT).show();
+                                // Translation is optional. If it fails, send the original text instead of
+                                // blocking the user's message (internalParams already skips a retry).
+                                messageEditText.setText(originalMessage);
+                                sendMessageInternal(notify, scheduleDate, scheduleRepeatPeriod, payStars, false, internalParams);
                             }
                         }
                     });
