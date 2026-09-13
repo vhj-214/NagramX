@@ -148,13 +148,24 @@ public class NekoPetActivity extends BaseNekoSettingsActivity {
         copyButton.setOnClickListener(v -> copyPrompt(copyButton));
         content.addView(copyButton, new LinearLayout.LayoutParams(-1, dp(48)));
 
-        addTutorialText(content, "二、在豆包选择工作任务 Turbo", true);
-        addTutorialText(content, "打开豆包后点击左下角的快速按钮，在列表中选择“工作任务 Turbo”。下图中橙色圈出的位置就是正确选项。", false);
-        addTutorialImage(content, R.drawable.huanghun_pet_tutorial_step1);
+        Button openDoubaoButton = new Button(getParentActivity());
+        openDoubaoButton.setText("打开豆包官网");
+        openDoubaoButton.setAllCaps(false);
+        openDoubaoButton.setOnClickListener(v -> {
+            try {
+                getParentActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.doubao.com")));
+            } catch (Exception e) {
+                showInfo("打开失败", "找不到可用的浏览器，请手动打开 https://www.doubao.com");
+            }
+        });
+        content.addView(openDoubaoButton, new LinearLayout.LayoutParams(-1, dp(48)));
 
-        addTutorialText(content, "三、确认已选择 Turbo 后查看示例图", true);
-        addTutorialText(content, "选择完成后，使用“查看示例图”按钮查看示意图，再返回输入框。选择一张清晰、主体完整的角色图片，并与上面的生成口令一起发送给豆包。半身或头像也可以生成，但客户端会自动禁用行走、跳跃、转圈、蹲下和跺脚等全身动作。", false);
-        addTutorialImage(content, R.drawable.huanghun_pet_tutorial_step2);
+        addTutorialText(content, "二、在网页版豆包中选择工作和云电脑", true);
+        addTutorialText(content, "打开豆包官网后选择“工作”，然后在左下角一定要选择“云电脑”。请按照下图所示操作。", false);
+        addTutorialImage(content, R.drawable.huanghun_pet_tutorial_step3);
+
+        addTutorialText(content, "三、图片选择", true);
+        addTutorialText(content, "选择一张自己喜欢的图片，点击添加，然后将刚刚复制的生成口令粘贴并发送给豆包。建议选择清晰、主体完整的角色图片。半身或头像也可以生成，但客户端会自动禁用行走、跳跃、转圈、蹲下和跺脚等全身动作。", false);
 
         addTutorialText(content, "四、下载生成的压缩包（按图片顺序操作）", true);
         addTutorialText(content, "第1步：如果当前页面无法直接下载，长按压缩包消息，在菜单中选择“分享”。\n\n第2步：在分享页面点击“复制链接”，再把链接复制到浏览器中打开。\n\n第3步：在浏览器中等待压缩包下载。下载过程中请根据压缩包大小和网络环境耐心等待，不要频繁重复请求。\n\n第4步：下载完成后点击下载按钮，在“保存压缩包文件”窗口点击“立即下载”。保存完成后回到黄昏客户端导入 ZIP 文件。", false);
